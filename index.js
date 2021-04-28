@@ -7,6 +7,10 @@ const app = express()
 app.set("views",path.join(__dirname,"views"))
 app.set("view engine","ejs")
 
+app.get("/",function(req,res){
+    res.render("index.ejs");
+})  
+
 // If you do not want to use diskStorage then uncomment it    
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {  
@@ -40,19 +44,11 @@ var upload = multer({
 // mypic is the name of file attribute
 }).single("mypic");   
 
-
-app.get("/",function(req,res){
-    res.render("index.ejs");
-})    
+  
 
 app.post("/uploadProfilePicture",function (req, res, next) {        
-    // Error MiddleWare for multer file upload, so if any
-    // error occurs, the image would not be uploaded!
     upload(req,res,(err) => {  
         if(err) {  
-            // ERROR occured (here it can be occured due
-            // to uploading image of size greater than
-            // 1MB or uploading different file type)
             res.send(err)
         }
         else {
